@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+import logging
+import sys
+import traceback
+
+from src.my_socket import MySocket
+from src.arg_parser import parse_args
+from src.game import Game
+
+# Define default port constants
+DEFAULT_PORT = 27993
+TLS_PORT = 27994
+
+
+if __name__ == '__main__':
+    args = parse_args(sys.argv[1:])
+    sock = MySocket()
+    try:
+        print(f"HostName: {args.hostname}, Port: {args.p}, use_tls: {args.s}")
+        sock.connect(host=args.hostname, port=args.p, use_tls=args.s)
+        game = Game(sock, args.username, log_level=logging.WARN)
+        game.start_game()
+    except Exception as e:
+        print(f"Failed to connect to {args.hostname} on port {args.p}: {e}")
+        traceback.print_exc()
