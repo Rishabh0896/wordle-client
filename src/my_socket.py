@@ -18,13 +18,10 @@ class MySocket:
             context = ssl.create_default_context()
             self.sock = context.wrap_socket(self.sock, server_hostname=host)
         try:
-            print("Tried to connect to " + host + ":" + str(port))
             self.sock.connect((host, port))
         except ssl.SSLError as e:
-            print(f"SSL error: {e}")
             raise
         except Exception as e:
-            print(f"Exception: {e}")
             raise
 
     def send_msg(self, msg):
@@ -39,7 +36,6 @@ class MySocket:
             part = self.sock.recv(Config.BUFFER_SIZE)
             if not part:
                 # Connection closed
-                print("socket connection closed while receiving response")
                 break
             chunks.append(part)
             if b'\n' in part:

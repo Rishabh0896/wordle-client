@@ -47,7 +47,6 @@ class Game:
             response = self.guess_word(word=guess)
             message_type = response["type"]
             if message_type == "bye":
-                print(f"The word was : {guess} and the tries are : {tries}")
                 break
             guess = self.get_next_guess(response)
 
@@ -96,7 +95,6 @@ class Game:
                 self.logger.info(f"Only {len(self.possible_words)} words left. Choosing {next_guess}")
                 return next_guess
         except Exception as e:
-            print(e)
             traceback.print_exc()
 
         # Use letter frequency for scoring
@@ -110,7 +108,6 @@ class Game:
         encoded_msg = msg.encode('ascii')
         self.sock.send_msg(encoded_msg)
         msg_recv = self.sock.recv_msg()
-        print(msg_recv)
         response_dict = json.loads(msg_recv)
         self.game_id = response_dict['id']
 
