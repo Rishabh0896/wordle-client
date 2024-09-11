@@ -47,6 +47,7 @@ class Game:
             response = self.guess_word(word=guess)
             message_type = response["type"]
             if message_type == "bye":
+                print(message_type["flag"])
                 break
             guess = self.get_next_guess(response)
 
