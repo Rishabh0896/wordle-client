@@ -2,16 +2,29 @@ import os
 
 
 class Config:
-    # Network settings
-    DEFAULT_PORT = int(os.getenv('DEFAULT_PORT', 27993))
-    TLS_PORT = int(os.getenv('TLS_PORT', 27994))
+    """
+    Configuration class for the Wordle game client.
 
-    # Game settings
-    MAX_RETRIES = int(os.getenv('MAX_RETRIES', 500))
+    This class manages all configuration settings for the game, including network settings,
+    game parameters, and logging configurations. It uses environment variables with default
+    values to allow for easy configuration changes without modifying the code.
 
-    # Other constants
-    BUFFER_SIZE = int(os.getenv('BUFFER_SIZE', 1024))
+    Attributes:
+        DEFAULT_PORT (int): The default port for non-TLS connections.
+        TLS_PORT (int): The default port for TLS connections.
+        MAX_RETRIES (int): Maximum number of retry attempts for game operations.
+        INITIAL_GUESS (str): The initial guess word for the Wordle game.
+        BUFFER_SIZE (int): Size of the buffer for network operations.
+        LOG_LEVEL (str): The logging level for the application.
+        LOG_FILE (str): The file path for logging.
+        DEFAULT_ENCODING (str): The default character encoding for string operations.
+    """
 
-    @classmethod
-    def get_port(cls, use_tls=False):
-        return cls.TLS_PORT if use_tls else cls.DEFAULT_PORT
+    DEFAULT_PORT: int = int(os.getenv('DEFAULT_PORT', 27993))
+    TLS_PORT: int = int(os.getenv('TLS_PORT', 27994))
+    MAX_RETRIES: int = int(os.getenv('MAX_RETRIES', 500))
+    INITIAL_GUESS: str = os.getenv('INITIAL_GUESS', "salet")
+    BUFFER_SIZE: int = int(os.getenv('BUFFER_SIZE', 1024))
+    LOG_LEVEL: str = os.getenv('LOG_LEVEL', 'INFO')
+    LOG_FILE: str = os.getenv('LOG_FILE', 'wordle_solver.log')
+    DEFAULT_ENCODING: str = 'ascii'

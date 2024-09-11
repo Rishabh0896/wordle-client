@@ -1,23 +1,69 @@
 #!/usr/bin/env python3
+"""
+Wordle Game Client
+
+This script serves as the entry point for the Wordle game client. It handles
+command-line argument parsing, establishes a connection to the game server,
+and initiates the game session.
+
+Usage:
+    client [-p PORT] [-s] <hostname> <username>
+
+Options:
+    -p PORT    Specify the server port (default: 27993 for non-TLS, 27994 for TLS)
+    -s         Use TLS encrypted connection
+    hostname   The hostname of the game server
+    username   The player's username
+"""
+
 import logging
 import sys
-import traceback
+from typing import NoReturn
 
 from src.my_socket import MySocket
 from src.arg_parser import parse_args
 from src.game import Game
 
-# Define default port constants
-DEFAULT_PORT = 27993
-TLS_PORT = 27994
+
+def main() -> NoReturn:
+    """
+    Main function to set up and run the Wordle game client.
+
+    This function parses command-line arguments, establishes a connection
+    to the game server, initializes the game, and handles any exceptions
+    that occur during execution.
+
+    Raises:
+        SystemExit: If an unhandled exception occurs during execution.
+    """
+    try:
+        # Parse command-line arguments
+        hostname, port, username, is_ssl = parse_args(sys.argv[1:])
+
+        # Setup logging
+        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+        # Establish connection to the server
+        try:
+            sock = MySocket()
+            sock.connect(host=hostname, port=port, use_tls=is_ssl)
+        except ConnectionError as e:
+            logging.error(f"Failed to connect to the server: {e}")
+            sys.exit(1)
+
+        # Initialize and start the game
+        game = Game(sock, username, log_level=logging.WARN)
+        game.start_game()
+
+    except KeyboardInterrupt:
+        logging.info("Game interrupted by user. Exiting...")
+        sys.exit(0)
+
+    except Exception as e:
+        logging.error(f"An unexpected error occurred: {e}")
+        logging.debug("Stack trace:", exc_info=True)
+        sys.exit(1)
 
 
 if __name__ == '__main__':
-    hostname, port, username, is_ssl = parse_args(sys.argv[1:])
-    sock = MySocket()
-    try:
-        sock.connect(host=hostname, port=port, use_tls=is_ssl)
-        game = Game(sock, username, log_level=logging.WARN)
-        game.start_game()
-    except Exception as e:
-        traceback.print_exc()
+    main()
