@@ -13,11 +13,11 @@ TLS_PORT = 27994
 
 
 if __name__ == '__main__':
-    args = parse_args(sys.argv[1:])
+    hostname, port, username, is_ssl = parse_args(sys.argv[1:])
     sock = MySocket()
     try:
-        sock.connect(host=args.hostname, port=args.p, use_tls=args.s)
-        game = Game(sock, args.username, log_level=logging.WARN)
+        sock.connect(host=hostname, port=port, use_tls=is_ssl)
+        game = Game(sock, username, log_level=logging.WARN)
         game.start_game()
     except Exception as e:
         traceback.print_exc()

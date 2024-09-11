@@ -24,5 +24,6 @@ def parse_args(args=None):
         if args.p == Config.DEFAULT_PORT:
             args.p = Config.TLS_PORT
 
+    return args.hostname, args.p, args.username, args.s
 
 
