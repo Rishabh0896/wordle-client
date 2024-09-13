@@ -69,10 +69,8 @@ class Game:
         """
         self._send_recv_hello_message()
         guess = self._get_initial_guess()
-        tries = 1
 
         while True:
-            tries += 1
             response = self._guess_word(word=guess)
             if response["type"] == "bye":
                 print(response["flag"])

@@ -20,6 +20,7 @@ import logging
 import sys
 from typing import NoReturn
 
+from src.config import Config
 from src.my_socket import MySocket
 from src.arg_parser import parse_args
 from src.game import Game
@@ -52,7 +53,7 @@ def main() -> NoReturn:
             sys.exit(1)
 
         # Initialize and start the game
-        game = Game(sock, username, log_level=logging.WARN)
+        game = Game(sock, username, log_level=Config.LOG_LEVEL)
         game.start_game()
 
     except KeyboardInterrupt:

@@ -23,10 +23,6 @@ def parse_args(args: list) -> Tuple[str, int, str, bool]:
             - port (int): The port number to connect to.
             - username (str): The Northeastern username.
             - use_tls (bool): Whether to use TLS encryption.
-
-    Example:
-        import sys
-        hostname, port, username, use_tls = parse_args(sys.argv[1:])
     """
     parser = argparse.ArgumentParser(description="Client program to connect to a server.")
 

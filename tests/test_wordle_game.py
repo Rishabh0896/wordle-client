@@ -9,7 +9,7 @@ from src.game import Game
 class TestWordleGame(unittest.TestCase):
     """
     A test suite for the Wordle game implementation.
-    This class tests the game's ability to guess words efficiently.
+    This class tests the algorithm's ability to guess all the words present in the word_list.
     """
 
     def setUp(self):
@@ -71,7 +71,7 @@ class TestWordleGame(unittest.TestCase):
         guesses = []
         initial_guess = Config.INITIAL_GUESS
 
-        for _ in range(50):  # Maximum 50 attempts
+        for _ in range(Config.MAX_RETRIES):  # Maximum MAX_RETRIES attempts
             if not guesses:
                 guess = initial_guess
             else:
@@ -83,7 +83,7 @@ class TestWordleGame(unittest.TestCase):
             if guess == target_word:
                 return len(guesses)
 
-        return None  # Failed to guess within 50 attempts
+        return None  # Failed to guess within MAX_RETRIES attempts
 
     def test_game_simulation(self):
         """
@@ -117,7 +117,7 @@ class TestWordleGame(unittest.TestCase):
 
     def report_results(self, total_words, successful_guesses, total_attempts, failed_words):
         """
-        Report the results of the game simulation and perform assertions.
+        Report the results of the game simulation and perform assertions on the standard out.
 
         Args:
             total_words (int): Total number of words tested.
@@ -141,7 +141,7 @@ class TestWordleGame(unittest.TestCase):
 
 
 class WordleTestResult(unittest.TextTestResult):
-    """Custom test result class to provide more detailed output."""
+    """Custom test result class to provide more detailed output as test results."""
 
     def startTest(self, test):
         super().startTest(test)
