@@ -1,5 +1,6 @@
 import json
 import logging
+import sys
 from collections import Counter
 from typing import List, Set, Dict
 from src.config import Config
@@ -74,6 +75,7 @@ class Game:
             response = self._guess_word(word=guess)
             if response["type"] == "bye":
                 print(response["flag"])
+                self.sock.disconnect()  # Close the connection
                 break
             guess = self._get_next_guess(response)
 
@@ -165,13 +167,29 @@ class Game:
     def _send_recv_hello_message(self) -> None:
         """
         Send a hello message to the game server and receive the game ID.
+        If an error occurs, close the connection and exit the program.
         """
-        msg = json.dumps({"type": "hello", "northeastern_username": self.username}) + '\n'
-        encoded_msg = msg.encode(Config.DEFAULT_ENCODING)
-        self.sock.send_msg(encoded_msg)
-        msg_recv = self.sock.recv_msg()
-        response_dict = json.loads(msg_recv)
-        self.game_id = response_dict['id']
+        try:
+            msg = json.dumps({"type": "hello", "northeastern_username": self.username}) + '\n'
+            encoded_msg = msg.encode(Config.DEFAULT_ENCODING)
+            self.sock.send_msg(encoded_msg)
+            msg_recv = self.sock.recv_msg()
+            response_dict = json.loads(msg_recv)
+
+            if response_dict['type'] == "error":
+                print(f"Error from server: {response_dict['message']}")
+                raise ValueError(response_dict['message'])
+
+            self.game_id = response_dict['id']
+
+        except ValueError as e:
+            print(f"Error returned from server : {str(e)}")
+            self.sock.disconnect()
+            sys.exit(1)
+        except Exception as e:
+            print(f"Unexpected error occurred: {str(e)}")
+            self.sock.disconnect()
+            sys.exit(1)
 
     def _guess_word(self, word: str = "salet") -> Dict:
         msg = json.dumps({"type": "guess", "id": self.game_id, "word": word}) + '\n'

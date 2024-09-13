@@ -86,3 +86,15 @@ class MySocket:
                 break
 
         return b''.join(chunks).decode(Config.DEFAULT_ENCODING)
+
+    def disconnect(self):
+        """
+        Close the socket connection.
+        """
+        if self.sock:
+            try:
+                self.sock.close()
+            except Exception as e:
+                print(f"Error closing socket: {e}")
+            finally:
+                self.sock = None
