@@ -26,6 +26,6 @@ class Config:
     MAX_RETRIES: int = int(os.getenv('MAX_RETRIES', 500))
     INITIAL_GUESS: str = os.getenv('INITIAL_GUESS', "salet")
     BUFFER_SIZE: int = int(os.getenv('BUFFER_SIZE', 1024))
-    LOG_LEVEL: int = int(os.getenv('LOG_LEVEL', logging.WARN))
-    LOG_FILE: str = os.getenv('LOG_FILE', 'wordle_solver.log')
+    LOG_LEVEL: int = int(os.getenv('LOG_LEVEL', logging.DEBUG))
+    LOG_FILE: str = os.getenv('LOG_FILE', 'app.log')
     DEFAULT_ENCODING: str = 'ascii'

@@ -29,7 +29,7 @@ During development, I encountered and overcame several challenges:
 
 The client employs a letter frequency-based guessing strategy:
 
-1. Initial guess: The game begins with the predefined word "salet".
+1. Initial guess: The game begins with the predefined word "salet" (This can be modified through the config file).
 2. Constraint updating: After each guess, the client updates constraints based on server feedback:
    - Letters that must be in the word
    - Position-specific constraints for each letter
@@ -52,12 +52,16 @@ The project includes two main test scripts:
 
 These tests ensure the robustness of both the input handling and the core game logic.
 
+## Efficiency of the algorithm
+   The test file `test_wordle_game.py` also produces a chart of how efficiently the algorithm guesses the words sampled over all the words in the word list.
+   ```
+   Total words tested: 15918
+   Successful guesses: 15918
+   Success rate: 100.00%
+   Average attempts for successful guesses: 6.29
+   Failed words: []
+   ```
+
 ## Additional Notes
-
-1. Logging: Comprehensive logging is implemented throughout the application, which proved invaluable for debugging.
-
-2. Configuration Management: A `Config` class centralizes configuration settings, making it easier to adjust parameters like initial guess, buffer size, and logging levels.
-
-3. Future Improvements: 
+1. Future Improvements: 
    - Implement a more sophisticated guessing strategy, possibly using information theory concepts as explored in the 3Blue1Brown video on Wordle.
-   - Optimize the word filtering algorithm for improved performance.

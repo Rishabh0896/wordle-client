@@ -44,9 +44,9 @@ class Game:
         Returns:
             logging.Logger: Configured logger instance.
         """
-        logger = logging.getLogger('WordleSolver')
+        logger = logging.getLogger('App')
         logger.setLevel(level)
-        file_handler = logging.FileHandler('../wordle_solver.log', 'w')
+        file_handler = logging.FileHandler(Config.LOG_FILE, 'w')
         file_handler.setLevel(level)
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         file_handler.setFormatter(formatter)
